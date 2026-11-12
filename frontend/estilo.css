@@ -1,0 +1,230 @@
+/* Estilos del frontend del pronóstico.
+   Los colores viven en variables (:root) para que el modo oscuro solo cambie esas variables. */
+
+:root {
+  --fondo: #f4f6f9;
+  --superficie: #ffffff;
+  --texto: #17202b;
+  --suave: #566273;
+  --borde: #dce2ea;
+  --acento: #2563eb;
+  --historico: #2563eb;
+  --pronostico: #d9480f;
+  --banda: rgba(217, 72, 15, 0.16);
+  --ok: #2f855a;
+  --aviso: #b7791f;
+  --alerta: #c53030;
+  --error-fondo: #fdecea;
+  --error-texto: #8a1c13;
+  --error-borde: #f3b9b3;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #0e131a;
+    --superficie: #161d27;
+    --texto: #e7ecf3;
+    --suave: #9aa7b8;
+    --borde: #28333f;
+    --acento: #60a5fa;
+    --historico: #60a5fa;
+    --pronostico: #fb923c;
+    --banda: rgba(251, 146, 60, 0.2);
+    --ok: #48bb78;
+    --aviso: #ecc94b;
+    --alerta: #fc8181;
+    --error-fondo: #3a1613;
+    --error-texto: #ffd7d2;
+    --error-borde: #7a2b25;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.45;
+}
+
+h1, h2, p { margin: 0; }
+
+/* ----------------------------------------------------------- cabecera */
+.cabecera {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px 24px;
+}
+.cabecera h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.01em; }
+.subtitulo { color: var(--suave); font-size: 0.95rem; }
+.ultimo { color: var(--suave); font-size: 0.95rem; }
+
+main { max-width: 1100px; margin: 0 auto; padding: 8px 16px 24px; }
+
+/* ----------------------------------------------------------- error */
+.error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 8px 0 16px;
+  padding: 12px 16px;
+  background: var(--error-fondo);
+  color: var(--error-texto);
+  border: 1px solid var(--error-borde);
+  border-radius: 8px;
+}
+.error[hidden] { display: none; }
+
+/* ----------------------------------------------------------- controles */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+  margin: 8px 0 16px;
+}
+.controles label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--suave);
+}
+
+select, button {
+  font: inherit;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 8px 12px;
+  min-height: 40px;
+}
+button {
+  cursor: pointer;
+  font-weight: 600;
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #fff;
+}
+.error button { background: transparent; color: inherit; border-color: currentColor; }
+button:disabled { opacity: 0.6; cursor: progress; }
+select:focus-visible, button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------- indicadores */
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.tarjeta {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--acento);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.tarjeta h2 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--suave);
+}
+.valor {
+  margin-top: 4px;
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+.valor-texto { font-size: 1.25rem; padding-top: 8px; }
+.detalle { margin-top: 4px; font-size: 0.85rem; color: var(--suave); }
+
+.tarjeta[data-nivel="ok"] { border-left-color: var(--ok); }
+.tarjeta[data-nivel="aviso"] { border-left-color: var(--aviso); }
+.tarjeta[data-nivel="alerta"] { border-left-color: var(--alerta); }
+
+/* ----------------------------------------------------------- gráfica */
+.grafica-caja {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  transition: opacity 0.15s;
+}
+.lienzo { position: relative; height: 380px; }
+.aviso-grafica { padding: 8px 4px; color: var(--suave); }
+.aviso-grafica[hidden] { display: none; }
+body.cargando .grafica-caja { opacity: 0.55; }
+
+/* ----------------------------------------------------------- tabla */
+.tabla-seccion h2 { font-size: 1.05rem; margin-bottom: 8px; }
+.tabla-caja {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  max-height: 360px;
+  overflow: auto;
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+th, td { padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--borde); white-space: nowrap; }
+thead th {
+  position: sticky;
+  top: 0;
+  background: var(--superficie);
+  color: var(--suave);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr:last-child td { border-bottom: 0; }
+tr.maximo td { font-weight: 700; background: var(--banda); }
+.etiqueta-max {
+  margin-left: 8px;
+  padding: 1px 6px;
+  font-size: 0.7rem;
+  border-radius: 999px;
+  background: var(--pronostico);
+  color: #fff;
+}
+
+/* ----------------------------------------------------------- pie */
+.pie {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+.pie a { color: var(--acento); }
+
+/* ----------------------------------------------------------- celular */
+@media (max-width: 600px) {
+  .cabecera h1 { font-size: 1.35rem; }
+  .controles label { flex: 1 1 140px; }
+  .controles select { width: 100%; }
+  .controles button { flex: 1 1 100%; }
+  .lienzo { height: 300px; }
+  .valor { font-size: 1.75rem; }
+  th, td { padding: 8px 8px; }
+  table { font-size: 0.88rem; }
+  thead th { letter-spacing: 0; font-size: 0.72rem; }
+  .etiqueta-max { display: none; }      /* en el celular la fila del máximo se marca solo con el fondo */
+}
