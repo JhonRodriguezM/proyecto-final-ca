@@ -1,0 +1,14 @@
+# Credenciales: nunca deben entrar a la imagen
+.env
+
+# Historial y configuración del repositorio
+.git
+.devcontainer/
+
+# Notebooks (solo sirven para entrenar, no para correr la API)
+notebooks/
+
+# Cachés y entornos de Python
+__pycache__/
+*.pyc
+.venv/
