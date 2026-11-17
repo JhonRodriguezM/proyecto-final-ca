@@ -1,3 +1,4 @@
+# Video de youtube: https://youtu.be/6eb9AlSYA1s
 # uvicorn app.main:app --host 0.0.0.0 --port 8000
 # https://improved-system-rqw46xw56g9c5g7g-8000.app.github.dev/api/salud
 # docker build -t pronostico .
