@@ -1,8 +1,8 @@
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-https://improved-system-rqw46xw56g9c5g7g-8000.app.github.dev/api/salud
-docker build -t pronostico .
-docker run --rm -p 8000:8000 -e INFLUX_URL -e INFLUX_TOKEN -e INFLUX_ORG -e INFLUX_BUCKET pronostico
-docker ps
+# uvicorn app.main:app --host 0.0.0.0 --port 8000
+# https://improved-system-rqw46xw56g9c5g7g-8000.app.github.dev/api/salud
+# docker build -t pronostico .
+# docker run --rm -p 8000:8000 -e INFLUX_URL -e INFLUX_TOKEN -e INFLUX_ORG -e INFLUX_BUCKET pronostico
+# docker ps
 
 
 # Proyecto final · Pronóstico de series de tiempo en producción
